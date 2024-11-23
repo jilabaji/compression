@@ -1,5 +1,7 @@
 FROM node:23-alpine3.19
 
+RUN apk add --no-cache ffmpeg
+
 WORKDIR /app
 
 COPY package.json .

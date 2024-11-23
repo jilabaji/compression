@@ -78,13 +78,12 @@
     <div class="container">We accept only JPG images at this moment: 
     </div>
     <div class="container">
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <input type="file" name="files"
-            class="btn btn-primary" id="file"
-            >
-            <button class="btn btn-primary" type="submit" style="border-radius: 4px;">
-                Upload
-            </button>
+        <!-- Image Upload Section -->
+        <h2>Upload an Image</h2>
+        <form action="/upload-image" method="POST" enctype="multipart/form-data">
+            <label for="image">Choose an image (JPG or PNG):</label>
+            <input type="file" id="image" name="image" accept="image/jpeg, image/png" required />
+            <button type="submit">Upload and Compress Image</button>
         </form>
         
     </div>
@@ -92,34 +91,83 @@
     <div class="container">
         <div id="successMessage" class="message <%= alert.error_flag ? 'error-message' : 'success-message' %>"><%= alert.message %></div>
     </div>
+    <br />
     <% } %>
   <div class="container">
     
     <!-- Original File Card -->
     <div class="card">
       <h2>Original File:</h2>
-      <img src="./uploads/img1.jpg" alt="Original File">
+      <img src="<%= oipath %>" alt="Original File">
       <div class="file-info">
         <!-- <p><span>File Name:</span> img1.jpg</p> -->
         <p><span>File size:</span> <%= oisize %> MB</p>
-        <a href="./uploads/img1.jpg" download>Download Image</a>
+        <a href="<%= oipath %>" download>Download Image</a>
       </div>
     </div>
 
     <!-- Compressed File Card -->
     <div class="card">
       <h2>Compressed File:</h2>
-      <img src="./uploads/img1_compressed.jpg" alt="Compressed File">
+      <img src="<%= comppath %>" alt="Compressed File">
       <div class="file-info">
         <!-- <p><span>File Name:</span> compressed0021.jpg</p> -->
         <p><span>File size:</span> <%= compsize %> MB</p>
-        <a href="./uploads/img1_compressed.jpg" download>Download Image</a>
+        <a href="<%= comppath %>" download>Download Image</a>
+      </div>
+    </div>
+  </div>
+  <br />
+  <br />
+  <div class="container">
+    <!-- Video Upload Section -->
+    <h2>Upload a Video</h2>
+    <form action="/upload-video" method="POST" enctype="multipart/form-data">
+        <label for="video">Choose a video (MP4) Lessthen 2MB:</label>
+        <input type="file" id="video" name="video" accept="video/mp4" required />
+        <button type="submit">Upload and Compress Video</button>
+    </form>
+    
+  </div>
+  <% if (videoalert) { %>
+    <div class="container">
+        <div id="successMessage" class="message <%= videoalert.error_flag ? 'error-message' : 'success-message' %>"><%= videoalert.message %></div>
+    </div>
+    <br />
+    <% } %>
+  <div class="container">
+    
+    <!-- Original File Card -->
+    <div class="card">
+      <h2>Original Video:</h2>
+      <video width="400" controls>
+        <source src="<%= ovpath %>" type="video/mp4">
+        Your browser does not support HTML video.
+      </video>
+      <div class="file-info">
+        <!-- <p><span>File Name:</span> img1.jpg</p> -->
+        <p><span>File size:</span> <%= ovsize %> MB</p>
+        <a href="<%= ovpath %>" download>Download Image</a>
+      </div>
+    </div>
+
+    <!-- Compressed File Card -->
+    <div class="card">
+      <h2>Compressed Video:</h2>
+      <video width="400" controls>
+        <source src="<%= compvpath %>" type="video/mp4">
+        Your browser does not support HTML video.
+      </video>
+      
+      <div class="file-info">
+        <!-- <p><span>File Name:</span> compressed0021.jpg</p> -->
+        <p><span>File size:</span> <%= compvsize %> MB</p>
+        <a href="<%= compvpath %>" download>Download Image</a>
       </div>
     </div>
   </div>
 
+  
 </body>
-<script type="text/javascript">
-    document.getElementById("file").value = "";
-</script>
+
 </html>
