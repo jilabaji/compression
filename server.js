@@ -12,6 +12,21 @@ app.set('view engine', 'ejs');
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(cookieParser());
 
+// Function to calculate the compression percentage
+const calculateCompressionPercentage = (originalSize, compressedSize) => {
+    if (originalSize && compressedSize) {
+        return ((originalSize - compressedSize) / originalSize * 100).toFixed(2);
+    }
+    return null;
+};
+
+// Helper function to get file size if file exists
+const getFileSize = (filePath) => {
+    return fs.existsSync(filePath) 
+        ? (fs.statSync(filePath).size / (1024 * 1024)).toFixed(2) 
+        : null;
+};
+
 app.get('/', (req, res) => {
     const alert = req.cookies.alert ? req.cookies.alert : "";
     const videoalert = req.cookies.videoalert ? req.cookies.videoalert : "";
@@ -20,29 +35,36 @@ app.get('/', (req, res) => {
     const compressedImagePath = "./uploads/compressed_original_file.jpg";
     const originalVideoPath = "./uploads/original_file.mp4";
     const compressedVideoPath = "./uploads/compressed_original_file.mp4";
+
+      // Get file sizes
+    const originalImageSize = getFileSize(originalImagePath);
+    const compressedImageSize = getFileSize(compressedImagePath);
+    const originalVideoSize = getFileSize(originalVideoPath);
+    const compressedVideoSize = getFileSize(compressedVideoPath);
     
-    // Helper function to get file size if file exists
-    const getFileSize = (filePath) => {
-        return fs.existsSync(filePath) 
-            ? (fs.statSync(filePath).size / (1024 * 1024)).toFixed(2) 
-            : null;
-    };
+    // Calculate compression percentages
+    const imageCompressionPercentage = calculateCompressionPercentage(originalImageSize, compressedImageSize);
+    const videoCompressionPercentage = calculateCompressionPercentage(originalVideoSize, compressedVideoSize);
+
     const data = {
         alert: alert ? JSON.parse(alert) : null,
         videoalert: videoalert ? JSON.parse(videoalert) : null,
 
         oipath: originalImagePath,
-        oisize: getFileSize(originalImagePath),
+        oisize: originalImageSize,
+        imageCompressionPercentage: imageCompressionPercentage,
 
         comppath: compressedImagePath,
-        compsize: getFileSize(compressedImagePath),
+        compsize: compressedImageSize,
 
         ovpath: originalVideoPath,
-        ovsize: getFileSize(originalVideoPath),
+        ovsize: originalVideoSize,
+        videoCompressionPercentage: videoCompressionPercentage,
 
         compvpath: compressedVideoPath,
-        compvsize: getFileSize(compressedVideoPath),
+        compvsize: compressedVideoSize,
     };
+    
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.render('index',data);
 });
