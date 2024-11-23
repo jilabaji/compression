@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Comparison</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+    <style>
+        #uploadForm{
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        input.btn{
+            flex: 0.8;
+        }
+        button.btn{
+            flex: 0.15;
+        }
+    </style>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      padding: 15px;
+      width: 40%;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .card .file-info {
+      margin-top: 10px;
+      text-align: left;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .card .file-info span {
+      font-weight: bold;
+    }
+    .message {
+        font-size: 16px;
+        margin-top: 10px;
+    }
+    .success-message {
+      color: #28a745;
+    }
+    .error-message {
+      color: #f83939;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="text-align: center;">File Comparison</h1>
+    <div class="container">We accept only JPG images at this moment: 
+    </div>
+    <div class="container">
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="files"
+            class="btn btn-primary" id="file"
+            >
+            <button class="btn btn-primary" type="submit" style="border-radius: 4px;">
+                Upload
+            </button>
+        </form>
+        
+    </div>
+    <% if (alert) { %>
+    <div class="container">
+        <div id="successMessage" class="message <%= alert.error_flag ? 'error-message' : 'success-message' %>"><%= alert.message %></div>
+    </div>
+    <% } %>
+  <div class="container">
+    
+    <!-- Original File Card -->
+    <div class="card">
+      <h2>Original File:</h2>
+      <img src="./uploads/img1.jpg" alt="Original File">
+      <div class="file-info">
+        <!-- <p><span>File Name:</span> img1.jpg</p> -->
+        <p><span>File size:</span> <%= oisize %> MB</p>
+      </div>
+    </div>
+
+    <!-- Compressed File Card -->
+    <div class="card">
+      <h2>Compressed File:</h2>
+      <img src="./uploads/img1_compressed.jpg" alt="Compressed File">
+      <div class="file-info">
+        <!-- <p><span>File Name:</span> compressed0021.jpg</p> -->
+        <p><span>File size:</span> <%= compsize %> MB</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+<script type="text/javascript">
+    document.getElementById("file").value = "";
+</script>
+</html>
